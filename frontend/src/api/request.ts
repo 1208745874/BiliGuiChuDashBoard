@@ -33,7 +33,7 @@ instance.interceptors.response.use(
         if(error.response && error.response.status === 401){
             localStorage.removeItem('token')
 
-            const isLoginRequest = error.config.url?.include('/auth/login')
+            const isLoginRequest = error.config.url?.includes('/auth/login')
             if(!isLoginRequest){
                 window.location.reload()//弄回登录页
             }
@@ -43,6 +43,6 @@ instance.interceptors.response.use(
 )
 
 export function request<T>(config: AxiosRequestConfig): Promise<T>{
-    return instance.request(config)
+    return instance.request(config) as unknown as Promise<T>
 }
 
