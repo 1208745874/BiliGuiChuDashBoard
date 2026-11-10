@@ -5,8 +5,12 @@ import { fileURLToPath, URL } from 'node:url'
 
 
 //在vite.config.ts加个检查逻辑
-function validateEnv(env: Record<string, string>){
-  const requiredVars = ['VITE_API_BASE_URL', 'VITE_PROXY_TARGET']
+function validateEnv(env: Record<string, string>, mode: string){
+  const requiredVars = ['VITE_API_BASE_URL']
+
+  if(mode === 'development'){
+    requiredVars.push('VITE_PROXY_TARGET')
+  }
   const missing = requiredVars.filter((key) => !env[key])
 
   if(missing.length > 0){
@@ -22,7 +26,7 @@ export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd())
 
   //执行检查
-  validateEnv(env)
+  validateEnv(env, mode)
 
   return {
     plugins: [vue()],
